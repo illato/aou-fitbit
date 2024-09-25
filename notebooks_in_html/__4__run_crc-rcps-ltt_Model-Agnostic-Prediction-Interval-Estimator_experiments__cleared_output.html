@@ -10191,7 +10191,7 @@ No disorder          78.29%
         <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s1">'y_true'</span><span class="p">])</span>
         
         <span class="c1"># Calculate precision and recall for micro, macro, and weighted averages</span>
-        <span class="k">for</span> <span class="n">avg</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'micro'</span><span class="p">,</span> <span class="s1">'macro'</span><span class="p">,</span> <span class="s1">'weighted'</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">avg</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'micro'</span><span class="p">,</span> <span class="s1">'macro'</span><span class="p">,</span> <span class="s1">'weighted'</span><span class="p">,</span><span class="s1">'samples'</span><span class="p">]:</span>
             <span class="n">precision</span> <span class="o">=</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">method_predictions</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">avg</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">recall</span> <span class="o">=</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">method_predictions</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">avg</span><span class="p">)</span>
             <span class="n">metrics</span><span class="p">[</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">_precision_</span><span class="si">{</span><span class="n">avg</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">precision</span>
@@ -10211,7 +10211,7 @@ No disorder          78.29%
     <span class="c1"># Reorder the metrics</span>
     <span class="n">ordered_metrics</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'recall'</span><span class="p">,</span> <span class="s1">'precision'</span><span class="p">]:</span>
-        <span class="k">for</span> <span class="n">avg</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'micro'</span><span class="p">,</span> <span class="s1">'macro'</span><span class="p">,</span> <span class="s1">'weighted'</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">avg</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'micro'</span><span class="p">,</span> <span class="s1">'macro'</span><span class="p">,</span> <span class="s1">'weighted'</span><span class="p">,</span><span class="s1">'samples'</span><span class="p">]:</span>
             <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'base'</span><span class="p">,</span> <span class="s1">'crc'</span><span class="p">,</span> <span class="s1">'rcps'</span><span class="p">,</span> <span class="s1">'ltt'</span><span class="p">]:</span>
                 <span class="n">ordered_metrics</span><span class="p">[</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">avg</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">avg</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span>
     
@@ -10290,6 +10290,8 @@ No disorder          78.29%
     <span class="k">if</span> <span class="s1">'wd'</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
         <span class="n">is_with_demographics</span> <span class="o">=</span> <span class="kc">True</span>
         
+    <span class="n">df</span> <span class="o">=</span> <span class="n">aggregate_ml_to_single_row_per_example</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    
     <span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'run'</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calculate_metrics_with_base</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>   
     
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
@@ -10298,6 +10300,8 @@ No disorder          78.29%
     
     <span class="n">result</span><span class="p">[</span><span class="s1">'with_demographics'</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_with_demographics</span>
     <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    
+<span class="n">df_ml_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">print_df_in_csv_format</span><span class="p">(</span><span class="n">df_ml_result</span><span class="p">)</span>
 </pre></div>
