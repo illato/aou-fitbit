@@ -1,7 +1,7 @@
-# Conformity of Psychiatric Condition Predictions using Wearable Biometrics
+# Conformal Learning for Quantifying Uncertainty in Psychiatric Condition Predictions
 
 
-This repository will allow you to reproduce the experiments in the Conformity of Psychiatric Condition Predictions using Wearable Biometrics paper.
+This repository will allow you to reproduce the experiments in the Conformal Learning for Quantifying Uncertainty in Psychiatric Condition Predictions.
 
 `cohorts/readme.md` contains the specifications provided to the All of Us Cohorts Builder.
 
